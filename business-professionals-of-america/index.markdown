@@ -4,7 +4,7 @@ comments: false
 date: 2013-09-25 22:25:18+00:00
 layout: page
 slug: business-professionals-of-america
-title: Business Professionals of America
+title: BPA
 wordpress_id: 132
 ---
 
