@@ -3,7 +3,7 @@ author: Scott Emmons
 comments: false
 layout: default
 slug: posts
-title: Posts
+title: Blog 
 ---
 
 <div class="home">
