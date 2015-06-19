@@ -1,5 +1,9 @@
 ---
+author: Scott Emmons
+comments: false
 layout: default
+slug: posts
+title: Posts
 ---
 
 <div class="home">
