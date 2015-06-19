@@ -20,7 +20,7 @@ This tool was designed as a supplement to investors to help with research. It is
 
 I wrote Matrices one weekend when my math teacher assigned dozens of problems involving matrices for homework. I found writing and using the program much more enjoyable than doing the homework with paper and pencil. Currently, the primary functionality of the program is to put a matrix into reduced row echelon form.
 
-[![Matrices Program Screenshot](http://scottemmons.com/wp-content/uploads/2013/09/Matrices-Program-1024x542.jpg)](/assets/Matrices-Program.jpg)
+![Matrices Program Screenshot](/assets/Matrices-Program.jpg)
 
 **[Space Invaders](https://github.com/scottemmons/Space_Invaders)**
 
