@@ -13,7 +13,7 @@ wordpress_id: 4
 
 
 
-![A Picture of Me](/assets/About-Me-Picture.jpg)
+<img src="/assets/About-Me-Picture.jpg" alt="A Picture of Me" style="maxheight: 200px;"/>
 
 I know how Newton felt! I am fascinated by the world around me, and I have deep desire not just to know things, but to understand them. I love to learn, and I am interested in a wide variety of topics ranging from history to technology. If not quite as well as Isaac Newton, I enjoy asking questions and attempting to grasp the big ideas of many subjects.
 
