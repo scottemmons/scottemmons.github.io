@@ -10,8 +10,8 @@ wordpress_id: 231
 
 # Submitted / Under Review
 
-  1. **MOOC Visual Analytics: Empowering Teachers, Students, Researchers, and Developers of Massively Open Online Courses
-Scott Emmons, Robert Light, Katy B&ouml;rner
+  1. **MOOC Visual Analytics: Empowering Teachers, Students, Researchers, and Developers of Massively Open Online Courses**
+Scott Emmons, Robert Light, Katy B&ouml;rner  
 [[Project Page](http://cns.iu.edu/2015-MOOCVis.html)]
 
 # Preprinted Work
