@@ -29,11 +29,11 @@ In addition, [MIT's OpenCourseWare](ocw.mit.edu/) and [Stanford's Engineering Ev
 
 There are tons of free computer science texts online. These are a great way to supplement online courses, but they can also be used as stand-alone classes as many have both lessons and assignments.
 
-[Structure and Interpretation of Computer Programs](http://mitpress.mit.edu/sicp/) is the quintessential programming textbook. It offers a conceptual foundation to the entire field of computer science, and can be paired with its online course[6.001 Structure and Interpretation of Computer Programs](http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-001-structure-and-interpretation-of-computer-programs-spring-2005/) on MIT's OpenCourseWare.Read [Why SICP Matters](http://www.cs.berkeley.edu/~bh/sicp.html), a short essay by UC Berkeley professor Brian Harvey, if you'd like to learn more about why the textbook is held in such high regard.
+[Structure and Interpretation of Computer Programs](http://mitpress.mit.edu/sicp/) is the quintessential programming textbook. It offers a conceptual foundation to the entire field of computer science, and can be paired with its online course [6.001 Structure and Interpretation of Computer Programs](http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-001-structure-and-interpretation-of-computer-programs-spring-2005/) on MIT's OpenCourseWare. Read [Why SICP Matters](http://www.cs.berkeley.edu/~bh/sicp.html), a short essay by UC Berkeley professor Brian Harvey, if you'd like to learn more about why the textbook is held in such high regard.
 
-[How to Design Programs, Second Edition](http://www.ccs.neu.edu/home/matthias/HtDP2e/) is another foundational computer science textbook. Here is some[great discussion](https://news.ycombinator.com/item?id=6150967) about the book.
+[How to Design Programs, Second Edition](http://www.ccs.neu.edu/home/matthias/HtDP2e/) is another foundational computer science textbook. Here is some [great discussion](https://news.ycombinator.com/item?id=6150967) about the book.
 
-[Learn Python the Hard Way](http://learnpythonthehardway.org/)and[Think Python](http://www.greenteapress.com/thinkpython/) are two Python textbooks. The former offers a hands-on approach to programming, and the latter has good explanation of basic concepts in Python.
+[Learn Python the Hard Way](http://learnpythonthehardway.org/) and [Think Python](http://www.greenteapress.com/thinkpython/) are two Python textbooks. The former offers a hands-on approach to programming, and the latter has good explanation of basic concepts in Python.
 
 [A Giant List of Freely Available Programming Books](http://stackoverflow.com/questions/194812/list-of-freely-available-programming-books)
 
@@ -43,6 +43,6 @@ There are tons of free computer science texts online. These are a great way to s
 
 **More Resources**
 
-Check out[edX](https://www.edx.org/),[Coursera](https://www.coursera.org/), [Udacity](https://www.udacity.com/),[Academic Earth](http://academicearth.org/), and[Class Central](http://www.class-central.com/)for more online classes.
+Check out [edX](https://www.edx.org/), [Coursera](https://www.coursera.org/), [Udacity](https://www.udacity.com/), [Academic Earth](http://academicearth.org/), and [Class Central](http://www.class-central.com/) for more online classes.
 
-See[Stack Overflow](http://stackoverflow.com/) to search for and ask programming questions, and visit[Hacker News](https://news.ycombinator.com/news)for thoughtful computer science discussion.
+See [Stack Overflow](http://stackoverflow.com/) to search for and ask programming questions, and visit[Hacker News](https://news.ycombinator.com/news)for thoughtful computer science discussion.

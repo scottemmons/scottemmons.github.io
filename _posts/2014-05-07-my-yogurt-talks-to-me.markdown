@@ -14,19 +14,19 @@ I woke up this morning and did my regular morning routine. I walked downstairs, 
 
 I found this.
 
-[![Chobani Yogurt Lid](http://scottemmons.com/wp-content/uploads/2014/04/talkingyogurt1-684x1024.jpg)](/assets/talkingyogurt1.jpg)
+![Chobani Yogurt Lid](/assets/talkingyogurt1.jpg)
 
 The yogurt was talking: "It's hard to believe but there are three cups of milk in here."
 
 The next day, it happened again.
 
-[![Chobani Yogurt Lid](http://scottemmons.com/wp-content/uploads/2014/04/talkingyogurt2-684x1024.jpg)](/assets/talkingyogurt2.jpg)
+![Chobani Yogurt Lid](/assets/talkingyogurt2.jpg)
 
 "Welcome to preservative-free yogurt made with only natural ingredients."
 
 And again.
 
-[![Chobani Yogurt Lid](http://scottemmons.com/wp-content/uploads/2014/04/talkingyogurt3-637x1024.jpg)](/assets/talkingyogurt3.jpg)
+![Chobani Yogurt Lid](/assets/talkingyogurt3.jpg)
 
 "Finally, a 100 calorie yogurt worth counting."
 

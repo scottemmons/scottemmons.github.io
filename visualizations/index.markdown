@@ -15,5 +15,5 @@ As part of my responsibility as a research intern at the Cyberinfrastructure for
 
 
 
-[Humanexus](http://yfshen.info/humanexus/)is a short film about human communication throughout the ages produced by CNS's director, Katy Borner. The map I made is a geospatial and topical visualization of all the film's showings. The location of each node tells where in the world a Humanexus showing occurred, and the color of each node denotes the category of each showing.
-[![Location of Humanexus Showings](http://scottemmons.com/wp-content/uploads/2013/09/Location-of-Humanexus-Showings-1024x591.jpg)](/assets/Location-of-Humanexus-Showings.jpg)
+[Humanexus](http://yfshen.info/humanexus/) is a short film about human communication throughout the ages produced by CNS's director, Katy Borner. The map I made is a geospatial and topical visualization of all the film's showings. The location of each node tells where in the world a Humanexus showing occurred, and the color of each node denotes the category of each showing.
+![Location of Humanexus Showings](/assets/Location-of-Humanexus-Showings.jpg)

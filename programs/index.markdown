@@ -14,7 +14,7 @@ I wrote Stocks as a tool for investors. In its current state, it is a framework 
 
 This tool was designed as a supplement to investors to help with research. It is not meant to be an investing guide or to provide investing advice.
 
-http://youtu.be/_BhvA4fVef8
+<iframe width="560" height="315" src="https://www.youtube.com/embed/_BhvA4fVef8" frameborder="0" allowfullscreen></iframe>
 
 **[Matrices](https://github.com/scottemmons/Matrices)**
 
@@ -28,4 +28,4 @@ A Pygame remake of the classic arcade game. It is still in development status.
 
 I have done my best to maintain the look, feel, and spirit of the original game.Currently, users can control their ship to fire at and kill the aliens; the aliens will move in rows and fire back. I have yet to implement gameflow logic, score keeping, and barriers.
 
-http://youtu.be/AR6I3Y6lNe0
+<iframe width="560" height="315" src="https://www.youtube.com/embed/AR6I3Y6lNe0" frameborder="0" allowfullscreen></iframe>

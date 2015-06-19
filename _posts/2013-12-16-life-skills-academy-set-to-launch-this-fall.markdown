@@ -35,6 +35,6 @@ I am very excited about the potential of this program; it is literally life-chan
 
 I'll conclude with the same message I gave at the program's callout meeting last Friday:
 
-http://youtu.be/yrhXikXZ6Qw
+<iframe width="560" height="315" src="https://www.youtube.com/embed/yrhXikXZ6Qw" frameborder="0" allowfullscreen></iframe>
 
 Welcome to the club.
