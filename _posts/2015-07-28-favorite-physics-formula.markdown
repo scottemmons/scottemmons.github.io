@@ -11,6 +11,8 @@ categories:
 - Physics
 ---
 
+![My Favorite Physics Formula](/assets/favoritephysicsformula.jpg)
+
 "What's your favorite physics formula?" a friend of mine once asked me.
 
 My first thought was, "A favorite physics formula? Who has a favorite physics formula?"
