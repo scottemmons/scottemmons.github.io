@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<!-- Apache 2.0 License information here -->
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>GeneBurst</title>
+		<!-- D3 -->
+		<script type="text/javascript" src="d3.min.js"></script>
+	</head>
+	<style>
+		body {
+			font-family: 'Open Sans', sans-serif;
+			font-size: 12px;
+			font-weight: 400;
+			background-color: #fff;
+			width: 960px;
+			height: 700px;
+			margin-top: 10px;
+			margin-left: auto;
+			margin-right: auto;
+	    }
+
+	    h3 {
+			font-weight: normal;
+			line-height: 0px;
+		}
+
+	    #sequence {
+	    	width: 600px;
+	    	height: 70px;
+	    }
+
+	    #sequence text, #legend text {
+	    	font-weight: 600;
+	    	fill: #fff;
+	    }
+
+	    #chart {
+	    	position: relative;
+	    }
+
+	    #chart path {
+	    	stroke: #fff;
+	    }
+
+	    #explanation {
+	    	position: absolute;
+	    	top: 260px;
+	    	left: 305px;
+	    	width: 140px;
+	    	text-align: center;
+	    	color: #666;
+	    	z-index: -1;
+	    }
+
+	    #percentage {
+	      font-size: 2.5em;
+	    }
+
+		#container {
+			width: 800px;
+			margin: 20px auto;
+		}
+
+		#page-title {
+			text-align: center;
+		}
+
+		circle,
+		path {
+			cursor: pointer;
+		}
+
+		circle {
+			fill: none;
+			pointer-events: all;
+		}
+
+		#tooltip {
+			background-color: white;
+			padding: 3px 5px;
+			border: 1px solid black;
+			text-align: center;
+		}
+	</style>
+	<body>
+		<div id="container">
+			<div id="page-title">
+					<h1>GeneBurst</h1>
+					<h3>By <a href="https://github.com/jebarb" target="_blank">James Barbour</a>, <a href="http://scottemmons.com/" target="_blank">Scott Emmons</a>, and Luke Tannenbaum</h3>
+			</div>
+			<div>
+				<div id="axisdropdowns" style="visibility: hidden;">
+					<p><select id="selectq1site" name="selectq1site" onchange="functionName(this.value)">
+						<option value="None">Select a Site for Q1</option>
+						<option value="None">No Site (Default)</option>
+						<option value="site1">site1</option>
+						<option value="site2">site2</option>
+						<option value="site3">site3</option>
+						<option value="site4">site4</option>
+						<option value="site5">site5</option>
+					</select>
+					<select id="selectq2site" name="selectq2site" onchange="functionName(this.value)">
+						<option value="None">Select a Site for Q2</option>
+						<option value="None">No Site (Default)</option>
+						<option value="site1">site1</option>
+						<option value="site2">site2</option>
+						<option value="site3">site3</option>
+						<option value="site4">site4</option>
+						<option value="site5">site5</option>
+					</select>
+					<select id="selectq3site" name="selectq3site" onchange="functionName(this.value)">
+						<option value="None">Select a Site for Q3</option>
+						<option value="None">No Site (Default)</option>
+						<option value="site1">site1</option>
+						<option value="site2">site2</option>
+						<option value="site3">site3</option>
+						<option value="site4">site4</option>
+						<option value="site5">site5</option>
+					</select></p>
+				</div>
+			</div>
+			<div id="plot-container">
+				<div id="sequence"></div>
+				<div id="chart">
+		        	<div id="explanation" style="visibility: hidden;">
+		          		<span id="percentage"></span><br/>
+		          		of the community consists of the taxon
+		          		<span id="taxon"></span>
+		        	</div>
+		      	</div>
+			</div>
+			<div id="how-to-read">
+				<h2>Description</h2>
+				<p>All of our code is open source and <a href="https://github.com/jebarb/GeneBurst" target="_blank">available on GitHub</a>.</p>
+			</div>
+		</div>
+		<!-- <script type="text/javascript" src="vis_data.js"></script> -->
+		<!-- <script type="text/javascript" src="json_1.js"></script> -->
+		<script type="text/javascript" src="vis.js"></script>
+	</body>
+</html>
