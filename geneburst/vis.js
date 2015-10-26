@@ -18,6 +18,12 @@ var b = {
 //   "end": "#bbbbbb"
 // };
 
+// Determine color of each arc based on its start angle and end angle
+// or based on the range of color of the partition hierarchicaly above it;
+// If both false, defaults to random color assignments pulled from var colors
+var angleColors = false;
+var partitionColor = true;
+var maxColorVal = 1275;
 var colors = ["#5687d1", "#7b615c", "#de783b", "#6ab975", "#a173d1", "#bbbbbb"];
 
 // To be parsed to JSON
@@ -35,7 +41,7 @@ var vis = d3.select("#chart").append("svg:svg")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
 var partition = d3.layout.partition()
-    .sort(function(a, b) { return a.name.localeCompare(b.name); })
+    //.sort(function(a, b) { return a.name.localeCompare(b.name); })
     .size([2 * Math.PI, radius * radius])
     .value(function(d) { return d.size; });
 
@@ -53,8 +59,6 @@ d3.text(csvFileName, function(text) {
   createVisualization(json["6.2100m"]);
   //createVisualization(json["3.1950m"]);
 
-  //recursiveSort(json["6.2100m"], "name", "children");
-
 });
 
 // Main function to draw and set up the visualization, once we have the data.
@@ -71,7 +75,6 @@ function createVisualization(json) {
 
   // For efficiency, filter nodes to keep only those large enough to see.
   var nodes = partition.nodes(json)
-      //.sort(function(b, a) { return a.name.localeCompare(b.name); })
       .filter(function(d) {
       return (d.dx > 0.005); // 0.005 radians = 0.29 degrees
       });
@@ -82,7 +85,15 @@ function createVisualization(json) {
       .attr("display", function(d) { return d.depth ? null : "none"; })
       .attr("d", arc)
       .attr("fill-rule", "evenodd")
-      .style("fill", function(d) { return determineColor(d.name); })
+      .style("fill", function(d) {
+        if (angleColors) {
+          return determineAngleColor(d);
+        } else if (partitionColor) {
+          return determinePartitionColor(d);
+        } else {
+          return determineNameColor(d);
+        }
+      })
       .style("opacity", 1)
       .on("mouseover", mouseover);
 
@@ -111,7 +122,7 @@ function mouseover(d) {
   d3.select("#explanation")
       .style("visibility", "");
 
-  var sequenceArray = getAncestors(d);
+  var sequenceArray = getAncestors(d, false);
   updateBreadcrumbs(sequenceArray, percentageString);
 
   // Fade all the segments.
@@ -151,12 +162,15 @@ function mouseleave(d) {
 
 // Given a node in a partition layout, return an array of all of its ancestor
 // nodes, highest first, but excluding the root.
-function getAncestors(node) {
+function getAncestors(node, getRoot) {
   var path = [];
   var current = node;
   while (current.parent) {
     path.unshift(current);
     current = current.parent;
+  }
+  if (getRoot) {
+    path.unshift(current);
   }
   return path;
 }
@@ -200,7 +214,15 @@ function updateBreadcrumbs(nodeArray, percentageString) {
 
   entering.append("svg:polygon")
       .attr("points", breadcrumbPoints)
-      .style("fill", function(d) { return determineColor(d.name); });
+      .style("fill", function(d) {
+        if (angleColors) {
+          return determineAngleColor(d);
+        } else if (partitionColor) {
+          return determinePartitionColor(d);
+        } else {
+          return determineNameColor(d);
+        }
+      });
 
   entering.append("svg:text")
       .attr("x", (b.w + b.t) / 2)
@@ -288,7 +310,32 @@ function buildHierarchy(csv, sequenceDelimiter) {
   return container;
 };
 
-// To determine colors
+function determineAngleColor(obj) {
+  startAngleColorVal = (obj.x / (2 * Math.PI)) * maxColorVal;
+  endAngleColorVal = ((obj.x + obj.dx) / (2 * Math.PI)) * maxColorVal;
+  return rgbMap((startAngleColorVal + endAngleColorVal) / 2);
+}
+
+function determinePartitionColor(obj) {
+  ancestors = getAncestors(obj, true);
+  width = maxColorVal;
+  position = 0;
+  for (i = 0; i < ancestors.length - 1; i++) {
+    pieces = ancestors[i].children.filter(function (obj) { return (obj.dx > (.015) * 2 * Math.PI) || (obj.dx > (.015) * 2 * Math.PI) }).length;
+    if (pieces != 0) {
+      width = width / pieces;
+      position = position + ancestors[i].children.indexOf(ancestors[i+1]) * width;
+    }
+  }
+  position = position + width / 2;
+  color = rgbMap(position);
+  if (typeof color == "undefined") {
+    return "#dddddd";
+  }
+  return color;
+}
+
+// To determine name color
 // Source: http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
 String.prototype.hashCode = function() {
   var hash = 0, i, chr, len;
@@ -301,6 +348,53 @@ String.prototype.hashCode = function() {
   return hash;
 };
 
-function determineColor(name) {
-  return colors[Math.abs(name.hashCode()) % colors.length];
+function determineNameColor(obj) {
+  return colors[Math.abs(obj.name.hashCode()) % colors.length];
+}
+
+function rgbMap(n) {
+
+  // Credits to user Adamarla on SO: http://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hex-in-javascript
+  function decimalToHex(decimal, chars) {
+    return (Math.round(decimal) + Math.pow(16, chars)).toString(16).slice(-chars);
+  }
+
+  // Modified
+  if (255 * 0 <= n && n <= 255 * 1) {
+    if (n == 255 * 0) { return "#ff0000";
+    } else if (n == 255 * 1) { return "#ffff00"; }
+    return "#ff" + decimalToHex(n % 255, 2) + "00";
+  } else if (255 * 1 < n && n <= 255 * 2) {
+    if (n == 255 * 2) return "00ff00";
+    return "#" + decimalToHex(255 - n % 255, 2) + "ff00";
+  } else if (255 * 2 < n && n <= 255 * 3) {
+    if (n == 255 * 3) return "#00ffff";
+    return "#00ff" + decimalToHex(n % 255, 2);
+  } else if (255 * 3 < n && n <= 255 * 4) {
+    if (n == 255 * 4) return "#0000ff";
+    return "#00" + decimalToHex(255 - n % 255, 2) + "ff";
+  } else if (255 * 4 < n && n <= 255 * 5) {
+    if (n == 255 * 5) return "#ff00ff";
+    return "#" + decimalToHex(n % 255, 2) + "00ff";
+  }
+
+  // Original with maxColorVal = 1530
+  if (0 <= n && n <= 255 * 1) {
+    return "#" + decimalToHex(n, 2) + "0000";
+  } else if (255 * 1 < n && n <= 255 * 2) {
+    if (n == 255 * 2) return "#ffff00";
+    return "#ff" + decimalToHex(n % 255, 2) + "00";
+  } else if (255 * 2 < n && n <= 255 * 3) {
+    if (n == 255 * 3) return "00ff00";
+    return "#" + decimalToHex(255 - n % 255, 2) + "ff00";
+  } else if (255 * 3 < n && n <= 255 * 4) {
+    if (n == 255 * 4) return "#00ffff";
+    return "#00ff" + decimalToHex(n % 255, 2);
+  } else if (255 * 4 < n && n <= 255 * 5) {
+    if (n == 255 * 5) return "#0000ff";
+    return "#00" + decimalToHex(255 - n % 255, 2) + "ff";
+  } else if (255 * 5 < n && n <= 255 * 6) {
+    if (n == 255 * 6) return "#ff00ff";
+    return "#" + decimalToHex(n % 255, 2) + "00ff";
+  }
 }
