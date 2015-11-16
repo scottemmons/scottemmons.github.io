@@ -18,17 +18,21 @@ var b = {
 //   "end": "#bbbbbb"
 // };
 
-// Determine color of each arc based on its start angle and end angle
-// or based on the range of color of the partition hierarchicaly above it;
-// If both false, defaults to random color assignments pulled from var colors
-var angleColors = false;
-var partitionColor = true;
+// Alphabetic sorting instead of default sorting by size
+var sortAlphabetically = true;
+
 var maxColorVal = 1275;
+// Color of each arc based on its start angle and end angle
+var angleColors = true;
+// Color based on the range of color of partition's parent
+var partitionColor = true;
+// To be used if both angleColors and partitionColor are false
 var colors = ["#5687d1", "#7b615c", "#de783b", "#6ab975", "#a173d1", "#bbbbbb"];
 
 // To be parsed to JSON
 var csvFileName = "otu_table_filtered_L6.csv";
 var sequenceDelimiter = ";";
+var maxDepth = 0;
 
 // Total size of all segments; we set this later, after loading the data.
 var totalSize = 0; 
@@ -45,6 +49,10 @@ var partition = d3.layout.partition()
     .size([2 * Math.PI, radius * radius])
     .value(function(d) { return d.size; });
 
+if (sortAlphabetically) {
+  partition.sort(function(a, b) { return a.name.localeCompare(b.name); });
+}
+
 var arc = d3.svg.arc()
     .startAngle(function(d) { return d.x; })
     .endAngle(function(d) { return d.x + d.dx; })
@@ -55,8 +63,11 @@ var arc = d3.svg.arc()
 // row, and can receive the csv as an array of arrays.
 d3.text(csvFileName, function(text) {
   var csv = d3.csv.parseRows(text);
-  var json = buildHierarchy(csv, sequenceDelimiter);
-  createVisualization(json["6.2100m"]);
+  var json = buildHierarchy(csv, sequenceDelimiter, false);
+  console.log(json);
+  createVisualization(json);
+  // console.log(json["6.2100m"]);
+  // createVisualization(json["6.2100m"]);
   //createVisualization(json["3.1950m"]);
 
 });
@@ -87,7 +98,7 @@ function createVisualization(json) {
       .attr("fill-rule", "evenodd")
       .style("fill", function(d) {
         if (angleColors) {
-          return determineAngleColor(d);
+          return determineAngleColor(d, d.depth);
         } else if (partitionColor) {
           return determinePartitionColor(d);
         } else {
@@ -216,7 +227,7 @@ function updateBreadcrumbs(nodeArray, percentageString) {
       .attr("points", breadcrumbPoints)
       .style("fill", function(d) {
         if (angleColors) {
-          return determineAngleColor(d);
+          return determineAngleColor(d, d.depth);
         } else if (partitionColor) {
           return determinePartitionColor(d);
         } else {
@@ -264,19 +275,27 @@ function updateBreadcrumbs(nodeArray, percentageString) {
 // for a partition layout. The first column is a sequence of step names, from
 // root to leaf, separated by hyphens. The second column is a count of how 
 // often that sequence occurred.
-function buildHierarchy(csv, sequenceDelimiter) {
+function buildHierarchy(csv, sequenceDelimiter, makeContainer) {
   var csvWidth = csv[0].length; // Assumes all rows are of equal width
-  var container = {};
+  if (makeContainer) {
+    var container = {};
+  }
+  var root = {"name": "root", "children": []};
   for (var column = 1; column < csvWidth; column++) {
-    var root = {"name": "root", "children": []};
-    var columnHeader = csv[0][column]
+    if (makeContainer) {
+      root = {"name": "root", "children": []};
+      var columnHeader = csv[0][column]
+    }
     for (var i = 1; i < csv.length; i++) {
       var sequence = csv[i][0];
-      var size = +csv[i][column];
+      var size = csv[i][column];
       if (isNaN(size)) {
         throw "Error: size value is not a number";
       }
       var parts = sequence.split(sequenceDelimiter);
+      if (parts.length > maxDepth) {
+        maxDepth = parts.length;
+      }
       var currentNode = root;
       for (var j = 0; j < parts.length; j++) {
         var children = currentNode["children"];
@@ -299,36 +318,65 @@ function buildHierarchy(csv, sequenceDelimiter) {
           }
           currentNode = childNode;
         } else {
-          // Reached the end of the sequence; create a leaf node.
-          childNode = {"name": nodeName, "size": size};
-          children.push(childNode);
+          // Reached the end of the sequence; merge or create leaf node.
+          var mergedLeaf = false;
+          for (var k = 0; k < children.length; k++) {
+            if (children[k]["name"] == nodeName) {
+              children[k]["size"] = String((Number(children[k]["size"]) + Number(size)));
+              mergedLeaf = true;
+              break;
+            }
+          }
+          if (!mergedLeaf) {
+            childNode = {"name": nodeName, "size": size};
+            children.push(childNode);
+          }
         }
       }
     }
-  container[columnHeader] = root;
+    if (makeContainer) {
+      container[columnHeader] = root;
+    }
   }
-  return container;
+  if (makeContainer) {
+    return container;
+  } else {
+    return root;
+  }
 };
 
-function determineAngleColor(obj) {
-  startAngleColorVal = (obj.x / (2 * Math.PI)) * maxColorVal;
-  endAngleColorVal = ((obj.x + obj.dx) / (2 * Math.PI)) * maxColorVal;
-  return rgbMap((startAngleColorVal + endAngleColorVal) / 2);
+function determineAngleColor(obj, depth) {
+  // startAngleColorVal = (obj.x / (2 * Math.PI)) * maxColorVal;
+  // endAngleColorVal = ((obj.x + obj.dx) / (2 * Math.PI)) * maxColorVal;
+  //return rgbMap((startAngleColorVal + endAngleColorVal) / 2 % 1275);
+  startAngleColorVal = (obj.x / (2 * Math.PI)) * 360;
+  endAngleColorVal = ((obj.x + obj.dx) / (2 * Math.PI)) * 360;
+  percentage = String(100 - (depth / (2 * maxDepth)) * 100) + "%"
+  console.log("hsl(" + String((startAngleColorVal + endAngleColorVal) / 2) + "," + percentage + "," + percentage + ")");
+  return "hsl(" + String((startAngleColorVal + endAngleColorVal) / 2) + "," + percentage + ",50%)";
 }
 
 function determinePartitionColor(obj) {
+  // console.log(obj);
   ancestors = getAncestors(obj, true);
   width = maxColorVal;
   position = 0;
   for (i = 0; i < ancestors.length - 1; i++) {
     pieces = ancestors[i].children.filter(function (obj) { return (obj.dx > (.015) * 2 * Math.PI) || (obj.dx > (.015) * 2 * Math.PI) }).length;
+    if (pieces >= 3 && (pieces % 2) != 0) { // *
+      // Corrects for repition of color in child partitions
+      pieces = pieces + 1; // *
+    } // *
     if (pieces != 0) {
       width = width / pieces;
+      console.log(ancestors[i].children.indexOf(ancestors[i+1]));
       position = position + ancestors[i].children.indexOf(ancestors[i+1]) * width;
     }
   }
   position = position + width / 2;
   color = rgbMap(position);
+  // console.log(position);
+  // console.log(color);
   if (typeof color == "undefined") {
     return "#dddddd";
   }
@@ -378,23 +426,23 @@ function rgbMap(n) {
     return "#" + decimalToHex(n % 255, 2) + "00ff";
   }
 
-  // Original with maxColorVal = 1530
-  if (0 <= n && n <= 255 * 1) {
-    return "#" + decimalToHex(n, 2) + "0000";
-  } else if (255 * 1 < n && n <= 255 * 2) {
-    if (n == 255 * 2) return "#ffff00";
-    return "#ff" + decimalToHex(n % 255, 2) + "00";
-  } else if (255 * 2 < n && n <= 255 * 3) {
-    if (n == 255 * 3) return "00ff00";
-    return "#" + decimalToHex(255 - n % 255, 2) + "ff00";
-  } else if (255 * 3 < n && n <= 255 * 4) {
-    if (n == 255 * 4) return "#00ffff";
-    return "#00ff" + decimalToHex(n % 255, 2);
-  } else if (255 * 4 < n && n <= 255 * 5) {
-    if (n == 255 * 5) return "#0000ff";
-    return "#00" + decimalToHex(255 - n % 255, 2) + "ff";
-  } else if (255 * 5 < n && n <= 255 * 6) {
-    if (n == 255 * 6) return "#ff00ff";
-    return "#" + decimalToHex(n % 255, 2) + "00ff";
-  }
+  // // Original with maxColorVal = 1530
+  // if (0 <= n && n <= 255 * 1) {
+  //   return "#" + decimalToHex(n, 2) + "0000";
+  // } else if (255 * 1 < n && n <= 255 * 2) {
+  //   if (n == 255 * 2) return "#ffff00";
+  //   return "#ff" + decimalToHex(n % 255, 2) + "00";
+  // } else if (255 * 2 < n && n <= 255 * 3) {
+  //   if (n == 255 * 3) return "00ff00";
+  //   return "#" + decimalToHex(255 - n % 255, 2) + "ff00";
+  // } else if (255 * 3 < n && n <= 255 * 4) {
+  //   if (n == 255 * 4) return "#00ffff";
+  //   return "#00ff" + decimalToHex(n % 255, 2);
+  // } else if (255 * 4 < n && n <= 255 * 5) {
+  //   if (n == 255 * 5) return "#0000ff";
+  //   return "#00" + decimalToHex(255 - n % 255, 2) + "ff";
+  // } else if (255 * 5 < n && n <= 255 * 6) {
+  //   if (n == 255 * 6) return "#ff00ff";
+  //   return "#" + decimalToHex(n % 255, 2) + "00ff";
+  // }
 }
