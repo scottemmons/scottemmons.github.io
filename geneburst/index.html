@@ -90,6 +90,9 @@
 					<h3>By <a href="https://github.com/jebarb" target="_blank">James Barbour</a>, <a href="http://scottemmons.com/" target="_blank">Scott Emmons</a>, and Luke Tannenbaum</h3>
 			</div>
 			<div>
+				<div id="uploadbutton">
+					<input type="file" id="uploader">
+				</div>
 				<div id="axisdropdowns" style="visibility: hidden;">
 					<p><select id="selectq1site" name="selectq1site" onchange="functionName(this.value)">
 						<option value="None">Select a Site for Q1</option>
@@ -139,5 +142,6 @@
 		<!-- <script type="text/javascript" src="vis_data.js"></script> -->
 		<!-- <script type="text/javascript" src="json_1.js"></script> -->
 		<script type="text/javascript" src="vis.js"></script>
+		<script>handleUpload("uploader", receiveUpload);</script>
 	</body>
 </html>

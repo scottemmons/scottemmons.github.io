@@ -1,3 +1,6 @@
+// Credits to http://bl.ocks.org/syntagmatic/raw/3299303/
+// for csv upload features
+
 // Dimensions of sunburst.
 var width = 750;
 var height = 600;
@@ -61,16 +64,42 @@ var arc = d3.svg.arc()
 
 // Use d3.text and d3.csv.parseRows so that we do not need to have a header
 // row, and can receive the csv as an array of arrays.
-d3.text(csvFileName, function(text) {
+// d3.text(csvFileName, function(text) {
+//   var csv = d3.csv.parseRows(text);
+//   var json = buildHierarchy(csv, sequenceDelimiter, false);
+//   console.log(json);
+//   createVisualization(json);
+//   // console.log(json["6.2100m"]);
+//   // createVisualization(json["6.2100m"]);
+//   //createVisualization(json["3.1950m"]);
+//
+// });
+
+function handleUpload(id, toReceive) {
+  var uploader = document.getElementById(id);
+  var reader = new FileReader();
+
+  reader.onload = function(event) {
+    var text = event.target.result;
+    toReceive(text);
+  }
+
+  uploader.addEventListener("change", handleFileChange, false);
+
+  function handleFileChange() {
+    // placeholder for usability features, i.e. "loading..." message
+    var file = this.files[0];
+    reader.readAsText(file);
+  }
+}
+
+function receiveUpload(text) {
   var csv = d3.csv.parseRows(text);
   var json = buildHierarchy(csv, sequenceDelimiter, false);
-  console.log(json);
   createVisualization(json);
-  // console.log(json["6.2100m"]);
   // createVisualization(json["6.2100m"]);
-  //createVisualization(json["3.1950m"]);
-
-});
+  // createVisualization(json["3.1950m"]);
+}
 
 // Main function to draw and set up the visualization, once we have the data.
 function createVisualization(json) {
