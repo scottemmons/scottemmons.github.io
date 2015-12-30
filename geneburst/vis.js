@@ -1,3 +1,9 @@
+///////////
+// To Do //
+///////////
+// Handle change in upload file
+// Make plots drag-and-droppable like http://jsfiddle.net/tovic/85EpZ/
+
 // Credits to http://bl.ocks.org/syntagmatic/raw/3299303/
 // for csv upload features
 
