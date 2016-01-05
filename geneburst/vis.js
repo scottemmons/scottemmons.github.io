@@ -54,7 +54,6 @@ var vis = d3.select("#chart").append("svg:svg")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
 var partition = d3.layout.partition()
-    //.sort(function(a, b) { return a.name.localeCompare(b.name); })
     .size([2 * Math.PI, radius * radius])
     .value(function(d) { return d.size; });
 
