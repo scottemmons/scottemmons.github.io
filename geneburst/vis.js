@@ -7,9 +7,12 @@
 // Credits to http://bl.ocks.org/syntagmatic/raw/3299303/
 // for csv upload features
 
+// Supporting multiple plots per row.
+var plotsInRow = 2;
+
 // Dimensions of sunburst.
-var width = 750;
-var height = 600;
+var width = 750 / plotsInRow;
+var height = 400;
 var radius = Math.min(width, height) / 2;
 
 // Breadcrumb dimensions: width, height, spacing, width of tip/tail.
@@ -46,13 +49,6 @@ var maxDepth = 0;
 // Total size of all segments; we set this later, after loading the data.
 var totalSize = 0; 
 
-var vis = d3.select("#chart").append("svg:svg")
-    .attr("width", width)
-    .attr("height", height)
-  .append("svg:g")
-    .attr("id", "container")
-    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-
 var partition = d3.layout.partition()
     .size([2 * Math.PI, radius * radius])
     .value(function(d) { return d.size; });
@@ -66,6 +62,9 @@ var arc = d3.svg.arc()
     .endAngle(function(d) { return d.x + d.dx; })
     .innerRadius(function(d) { return Math.sqrt(d.y); })
     .outerRadius(function(d) { return Math.sqrt(d.y + d.dy); });
+
+// Basic setup of page elements.
+initializeBreadcrumbTrail();
 
 // Use d3.text and d3.csv.parseRows so that we do not need to have a header
 // row, and can receive the csv as an array of arrays.
@@ -102,6 +101,7 @@ function receiveUpload(text) {
   var csv = d3.csv.parseRows(text);
   var json = buildHierarchy(csv, sequenceDelimiter, false);
   createVisualization(json);
+  createVisualization(json);
   // createVisualization(json["6.2100m"]);
   // createVisualization(json["3.1950m"]);
 }
@@ -110,7 +110,7 @@ function receiveUpload(text) {
 function createVisualization(json) {
 
   // Basic setup of page elements.
-  initializeBreadcrumbTrail();
+  var vis = appendChart();
 
   // Bounding circle underneath the sunburst, to make it easier to detect
   // when the mouse leaves the parent g.
@@ -143,7 +143,7 @@ function createVisualization(json) {
       .on("mouseover", mouseover);
 
   // Add the mouseleave handler to the bounding circle.
-  d3.select("#container").on("mouseleave", mouseleave);
+  d3.select("#chart").on("mouseleave", mouseleave);
 
   // Get total size of the tree = value of root node from partition.
   totalSize = path.node().__data__.value;
@@ -175,7 +175,7 @@ function mouseover(d) {
       .style("opacity", 0.3);
 
   // Then highlight only those that are an ancestor of the current segment.
-  vis.selectAll("path")
+  d3.selectAll("path")
       .filter(function(node) {
                 return (sequenceArray.indexOf(node) >= 0);
               })
@@ -220,10 +220,28 @@ function getAncestors(node, getRoot) {
   return path;
 }
 
+function appendChart() {
+  var chart = document.createElement('div');
+  chart.id = "chart";
+  chart.setAttribute("style", "width:" + String(width) + "px;" + 
+    'display:inline-block;');
+  chart.innerHTML = '<div id="explanation" style="visibility: hidden;">' +
+    '<span id="percentage"></span><br/>of community is the taxon ' +
+    '<span id="taxon"></span></div>';
+  document.getElementById('plot-container').appendChild(chart)
+  var vis = d3.select(chart).append("svg:svg")
+      .attr("width", width)
+      .attr("height", height)
+    .append("svg:g")
+      .attr("id", "container")
+      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+  return vis
+}
+
 function initializeBreadcrumbTrail() {
   // Add the svg area.
   var trail = d3.select("#sequence").append("svg:svg")
-      .attr("width", width)
+      .attr("width", width * plotsInRow)
       .attr("height", 50)
       .attr("id", "trail");
   // Add the label at the end, for the percentage.
@@ -386,7 +404,6 @@ function determineAngleColor(obj, depth) {
   startAngleColorVal = (obj.x / (2 * Math.PI)) * 360;
   endAngleColorVal = ((obj.x + obj.dx) / (2 * Math.PI)) * 360;
   percentage = String(100 - (depth / (2 * maxDepth)) * 100) + "%"
-  console.log("hsl(" + String((startAngleColorVal + endAngleColorVal) / 2) + "," + percentage + "," + percentage + ")");
   return "hsl(" + String((startAngleColorVal + endAngleColorVal) / 2) + "," + percentage + ",50%)";
 }
 
