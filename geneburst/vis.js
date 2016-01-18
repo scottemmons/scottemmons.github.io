@@ -285,7 +285,7 @@ function appendChart(plotNum) {
   chart.setAttribute("style", "width:" + String(width) + "px;" + 
     'display:inline-block;');
   chart.innerHTML = '<div class="explanation" id="explanation' + plotNum.toString() +
-    '" +style="visibility: hidden;">' +
+    '" style="visibility: hidden;">' +
     '<span class="percentage" id="percentage' + plotNum.toString() +
     '"></span><br/>of community is the taxon ' +
     '<span id="taxon' + plotNum.toString() + '"></span></div>';
