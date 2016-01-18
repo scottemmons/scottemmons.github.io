@@ -43,7 +43,7 @@
 	    	stroke: #fff;
 	    }
 
-	    #explanation {
+	    .explanation {
 	    	position: absolute;
 	    	font-size: 10px;
 	    	top: 160px;
@@ -54,7 +54,7 @@
 	    	z-index: -1;
 	    }
 
-	    #percentage {
+	    .percentage {
 	      font-size: 2.5em;
 	    }
 
@@ -136,7 +136,7 @@
 			</div>
 			<div id="how-to-read">
 				<h2>Description</h2>
-				<p>Determining microbial community composition is a fundamental problem in microbial ecology. Researchers spend years searching for funds, planning and executing expeditions to remote locations of the globe to collect samples for study. After extracting DNA samples in the lab, researchers use open-source software tools, such as QIIME, to process their DNA sequencing data. While such software efficiently processes the data, researchers are left with the challenge of interpreting it&mdash;rows upon rows of numbers and taxonomic classification.</p>
+				<p>Determining microbial community composition is a fundamental problem in microbial ecology. Researchers spend years searching for funds, planning and executing expeditions to remote locations of the globe to collect samples for study. After extracting DNA samples in the lab, researchers use open-source software tools, such as QIIME, to process their DNA sequencing data. While such software efficiently processes the data, researchers are left with the challenge of interpreting it&mdash;rows upon rows of numbers.</p>
 				<p>GeneBurst, acting as a direct QIIME to D3.js converter, meets the cyberinfrastructure needs of biological researchers. It takes the raw CSV data that QIIME outputs and converts it to a JSON file that can be passed into a D3.js sunburst visualization. A sunburst, which depicts the community composition of an individual location, has a hierarchical structure; as the burst progresses radially outward, it increases in taxonomic resolution. The size of each sunburst arc encodes the given taxonomic unit's percentage, which translates to relative contribution to the community. This example visualization uses data from the deep Gulf of Mexico produced by the Teske lab of UNC Marine Sciences.</p>
 			</div>
 		</div>

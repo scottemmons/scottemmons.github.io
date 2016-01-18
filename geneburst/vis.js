@@ -41,13 +41,13 @@ var partitionColor = true;
 // To be used if both angleColors and partitionColor are false
 var colors = ["#5687d1", "#7b615c", "#de783b", "#6ab975", "#a173d1", "#bbbbbb"];
 
+// To select elements among multiple plots
+currentPlot = 1;
+
 // To be parsed to JSON
 var csvFileName = "otu_table_filtered_L6.csv";
 var sequenceDelimiter = ";";
 var maxDepth = 0;
-
-// Total size of all segments; we set this later, after loading the data.
-var totalSize = 0; 
 
 var partition = d3.layout.partition()
     .size([2 * Math.PI, radius * radius])
@@ -99,18 +99,20 @@ function handleUpload(id, toReceive) {
 
 function receiveUpload(text) {
   var csv = d3.csv.parseRows(text);
-  var json = buildHierarchy(csv, sequenceDelimiter, false);
-  createVisualization(json);
-  createVisualization(json);
-  // createVisualization(json["6.2100m"]);
-  // createVisualization(json["3.1950m"]);
+  var combinedJson = buildHierarchy(csv, sequenceDelimiter, false);
+  var containedJson = buildHierarchy(csv, sequenceDelimiter, true);
+  //console.log(combinedJson);
+  createVisualization(combinedJson, combinedJson);
+  createVisualization(combinedJson, combinedJson);
+  createVisualization(containedJson["6.2100m"], combinedJson);
+  createVisualization(containedJson["3.1950m"], combinedJson);
 }
 
 // Main function to draw and set up the visualization, once we have the data.
-function createVisualization(json) {
+function createVisualization(json, basemap) {
 
   // Basic setup of page elements.
-  var vis = appendChart();
+  var vis = appendChart(currentPlot);
 
   // Bounding circle underneath the sunburst, to make it easier to detect
   // when the mouse leaves the parent g.
@@ -130,9 +132,10 @@ function createVisualization(json) {
       .attr("display", function(d) { return d.depth ? null : "none"; })
       .attr("d", arc)
       .attr("fill-rule", "evenodd")
+      .attr("plotnum", function(d) {return currentPlot;})
       .style("fill", function(d) {
         if (angleColors) {
-          return determineAngleColor(d, d.depth);
+          return determineAngleColor(retrieveFromHierarchy(basemap, getAncestors(d, false, true)), d.depth);
         } else if (partitionColor) {
           return determinePartitionColor(d);
         } else {
@@ -143,32 +146,21 @@ function createVisualization(json) {
       .on("mouseover", mouseover);
 
   // Add the mouseleave handler to the bounding circle.
-  d3.select("#chart").on("mouseleave", mouseleave);
+  d3.selectAll("#chart").on("mouseleave", mouseleave);
 
-  // Get total size of the tree = value of root node from partition.
-  totalSize = path.node().__data__.value;
+  currentPlot += 1;
  };
 
 // Fade all but the current sequence, and show it in the breadcrumb trail.
 function mouseover(d) {
 
-  var percentage = (100 * d.value / totalSize).toPrecision(3);
-  var percentageString = percentage + "%";
-  if (percentage < 0.1) {
-    percentageString = "< 0.1%";
-  }
+  var percentage, percentageString;
 
-  d3.select("#percentage")
-      .text(percentageString);
+  d3.selectAll(".explanation")
+      .style("visibility", "hidden");
 
-  d3.select("#taxon")
-      .text(d.name);
-
-  d3.select("#explanation")
-      .style("visibility", "");
-
-  var sequenceArray = getAncestors(d, false);
-  updateBreadcrumbs(sequenceArray, percentageString);
+  updateBreadcrumbs(getAncestors(d, false, false), percentageString);
+  var sequenceNameArray = getAncestors(d, false, true);
 
   // Fade all the segments.
   d3.selectAll("path")
@@ -177,7 +169,27 @@ function mouseover(d) {
   // Then highlight only those that are an ancestor of the current segment.
   d3.selectAll("path")
       .filter(function(node) {
-                return (sequenceArray.indexOf(node) >= 0);
+                // return isUnderUmbrella(getAncestors(node, false, true), sequenceNameArray)
+                //   && childrenContainLine(node, sequenceNameArray);
+                nodeAncestors = getAncestors(node, false, true);
+                if ((nodeAncestors.length == sequenceNameArray.length)
+                  && isUnderUmbrella(nodeAncestors, sequenceNameArray)) {
+                    totalSize = getAncestors(node, true, false)[0].value;
+                    percentage = (100 * node.value / totalSize).toPrecision(3);
+                    percentageString = percentage + "%";
+                    if (percentage < 0.1) {
+                      percentageString = "< 0.1%";
+                    }
+                    d3.selectAll("#percentage" + this.getAttribute("plotnum"))
+                        .text(percentageString)
+                    d3.selectAll("#taxon" + this.getAttribute("plotnum"))
+                        .text(d.name);
+                    d3.selectAll("#explanation" + this.getAttribute("plotnum"))
+                        .style("visibility", "");
+                    console.log('#explanation' + this.getAttribute("plotnum"));
+                    return true;
+                }
+                return false;
               })
       .style("opacity", 1);
 }
@@ -201,33 +213,82 @@ function mouseleave(d) {
               d3.select(this).on("mouseover", mouseover);
             });
 
-  d3.select("#explanation")
+  d3.selectAll(".explanation")
       .style("visibility", "hidden");
 }
 
 // Given a node in a partition layout, return an array of all of its ancestor
 // nodes, highest first, but excluding the root.
-function getAncestors(node, getRoot) {
+function getAncestors(node, getRoot, nameOnly) {
   var path = [];
   var current = node;
   while (current.parent) {
-    path.unshift(current);
+    path.unshift(nameOnly ? current.name : current);
     current = current.parent;
   }
   if (getRoot) {
-    path.unshift(current);
+    path.unshift(nameOnly ? current.name : current);
   }
   return path;
 }
 
-function appendChart() {
+function retrieveFromHierarchy(hierarchy, line) {
+  object = hierarchy;
+  for (var i = 0; i < line.length; i++) {
+    name = line[i];
+    children = object.children;
+    for (var j = 0; j < children.length; j++) {
+      if (line[i] == children[j].name) {
+        object = children[j];
+        continue;
+      } 
+    }
+  }
+  return object;
+}
+
+function isUnderUmbrella(line, umbrella) {
+  if (line.length > umbrella.length) {
+    return false;
+  }
+  for (i = 0; i < line.length; i++) {
+    if (line[i] != umbrella[i]) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function childrenContainLine(object, line) {
+  if (object.depth > line.length) {
+    return false;
+  }
+  current = object;
+  for (i = object.depth; i < line.length; i++) {
+    childNames = [];
+    for (j = 0; j < current.children.length; j++) {
+      childNames.push(current.children[j].name);
+    }
+    if (childNames.indexOf(line[i]) < 0) {
+      return false;
+    }
+    current = current.children[childNames.indexOf(line[i])];
+  }
+  console.log(object);
+  console.log(line);
+  return true;
+}
+
+function appendChart(plotNum) {
   var chart = document.createElement('div');
   chart.id = "chart";
   chart.setAttribute("style", "width:" + String(width) + "px;" + 
     'display:inline-block;');
-  chart.innerHTML = '<div id="explanation" style="visibility: hidden;">' +
-    '<span id="percentage"></span><br/>of community is the taxon ' +
-    '<span id="taxon"></span></div>';
+  chart.innerHTML = '<div class="explanation" id="explanation' + plotNum.toString() +
+    '" +style="visibility: hidden;">' +
+    '<span class="percentage" id="percentage' + plotNum.toString() +
+    '"></span><br/>of community is the taxon ' +
+    '<span id="taxon' + plotNum.toString() + '"></span></div>';
   document.getElementById('plot-container').appendChild(chart)
   var vis = d3.select(chart).append("svg:svg")
       .attr("width", width)
@@ -408,8 +469,7 @@ function determineAngleColor(obj, depth) {
 }
 
 function determinePartitionColor(obj) {
-  // console.log(obj);
-  ancestors = getAncestors(obj, true);
+  ancestors = getAncestors(obj, true, false);
   width = maxColorVal;
   position = 0;
   for (i = 0; i < ancestors.length - 1; i++) {
@@ -426,8 +486,6 @@ function determinePartitionColor(obj) {
   }
   position = position + width / 2;
   color = rgbMap(position);
-  // console.log(position);
-  // console.log(color);
   if (typeof color == "undefined") {
     return "#dddddd";
   }
