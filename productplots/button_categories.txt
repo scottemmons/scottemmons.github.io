@@ -1,5 +1,0 @@
-Respondent -- age, gender, marital status, education level, employment status, hours worked weekly
-
-Household Head -- age, gender, married, education level, employment status
-
-Household -- number of kids, average of of kids, number of other adults, income, size
