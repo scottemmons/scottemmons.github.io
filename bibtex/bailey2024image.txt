@@ -1,0 +1,6 @@
+@inproceedings{bailey2024image,
+    title={{Image Hijacks: Adversarial Images can Control Generative Models at Runtime}},
+    author={Luke Bailey and Euan Ong and Stuart Russell and Scott Emmons},
+    booktitle={International Conference on Machine Learning},
+    year={2024},
+}
