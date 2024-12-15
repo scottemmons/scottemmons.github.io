@@ -1,0 +1,6 @@
+@inproceedings{garber2025partially,
+      title={{The Partially Observable Off-Switch Game}}, 
+      author={Andrew Garber and Rohan Subramani and Linus Luu and Mark Bedaywi and Stuart Russell and Scott Emmons},
+      booktitle={Association for the Advancement of Artificial Intelligence},
+      year={2025}
+}

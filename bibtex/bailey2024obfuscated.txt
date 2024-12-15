@@ -1,0 +1,8 @@
+@misc{bailey2024obfuscated,
+      title={{Obfuscated Activations Bypass LLM Latent-Space Defenses}}, 
+      author={Luke Bailey and Alex Serrano and Abhay Sheshadri and Mikhail Seleznyov and Jordan Taylor and Erik Jenner and Jacob Hilton and Stephen Casper and Carlos Guestrin and Scott Emmons},
+      year={2024},
+      eprint={2412.09565},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}

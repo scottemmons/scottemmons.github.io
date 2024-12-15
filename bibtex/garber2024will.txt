@@ -1,8 +1,0 @@
-@misc{garber2024will,
-      title={{Will an AI with Private Information Allow Itself to Be Switched Off?}}, 
-      author={Andrew Garber and Rohan Subramani and Linus Luu and Mark Bedaywi and Stuart Russell and Scott Emmons},
-      year={2024},
-      eprint={2411.17749},
-      archivePrefix={arXiv},
-      primaryClass={cs.GT}
-}
