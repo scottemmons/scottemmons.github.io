@@ -1,6 +1,6 @@
 @inproceedings{emmons2022forlearning,
     title        = {{For Learning in Symmetric Teams, Local Optima are Global Nash Equilibria}},
-    author       = {Emmons, Scott and Oesterheld, Caspar and Critch, Andrew and Conitzer, Vince and Russell, Stuart},
+    author       = {Emmons, Scott and Oesterheld, Caspar and Critch, Andrew and Conitzer, Vincent and Russell, Stuart},
     year         = {2022},
     booktitle    = {International Conference on Machine Learning},
     pages        = {5924--5943},
