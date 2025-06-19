@@ -1,8 +1,0 @@
-@misc{emmons2024observation,
-    title={{Observation Interference in Partially Observable Assistance Games}},
-    author={Scott Emmons and Caspar Oesterheld and Vincent Conitzer and Stuart Russell},
-    year={2024},
-    eprint={2412.17797},
-    archivePrefix={arXiv},
-    primaryClass={cs.AI}
-}

@@ -1,0 +1,7 @@
+@article{shah2025approach,
+      title={{An Approach to Technical AGI Safety and Security}}, 
+      author={Rohin Shah and Alex Irpan and Alexander Matt Turner and Anna Wang and Arthur Conmy and David Lindner and Jonah Brown-Cohen and Lewis Ho and Neel Nanda and Raluca Ada Popa and Rishub Jain and Rory Greig and Samuel Albanie and Scott Emmons and Sebastian Farquhar and Sébastien Krier and Senthooran Rajamanoharan and Sophie Bridgers and Tobi Ijitoye and Tom Everitt and Victoria Krakovna and Vikrant Varma and Vladimir Mikulik and Zachary Kenton and Dave Orr and Shane Legg and Noah Goodman and Allan Dafoe and Four Flynn and Anca Dragan},
+      year={2025},
+      journal={arXiv},
+      url={https://arxiv.org/abs/2504.01849}
+}
