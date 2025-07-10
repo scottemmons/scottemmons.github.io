@@ -1,0 +1,9 @@
+@misc{emmons2025when,
+      title={{When Chain of Thought is Necessary, Language Models Struggle to Evade Monitors}}, 
+      author={Scott Emmons and Erik Jenner and David K. Elson and Rif A. Saurous and Senthooran Rajamanoharan and Heng Chen and Irhum Shafkat and Rohin Shah},
+      year={2025},
+      eprint={2507.05246},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2507.05246}, 
+}
