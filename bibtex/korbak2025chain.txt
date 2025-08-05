@@ -1,0 +1,7 @@
+@article{korbak2025chain,
+      title={{Chain of Thought Monitorability: A New and Fragile Opportunity for AI Safety}},
+      author={Tomek Korbak and Mikita Balesni and Elizabeth Barnes and Yoshua Bengio and Joe Benton and Joseph Bloom and Mark Chen and Alan Cooney and Allan Dafoe and Anca Dragan and Scott Emmons and Owain Evans and David Farhi and Ryan Greenblatt and Dan Hendrycks and Marius Hobbhahn and Evan Hubinger and Geoffrey Irving and Erik Jenner and Daniel Kokotajlo and Victoria Krakovna and Shane Legg and David Lindner and David Luan and Aleksander M\k{a}dry and Julian Michael and Neel Nanda and Dave Orr and Jakub Pachocki and Ethan Perez and Mary Phuong and Fabien Roger and Joshua Saxe and Buck Shlegeris and Martín Soto and Eric Steinberger and Jasmine Wang and Wojciech Zaremba and Bowen Baker and Rohin Shah and Vlad Mikulik},
+      year={2025},
+      journal={arXiv},
+      url={https://arxiv.org/abs/2507.11473}
+}
