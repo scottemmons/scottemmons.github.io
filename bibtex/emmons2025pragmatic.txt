@@ -1,0 +1,9 @@
+@misc{emmons2025pragmatic,
+      title={{A Pragmatic Way to Measure Chain-of-Thought Monitorability}},
+      author={Scott Emmons and Roland S. Zimmermann and David K. Elson and Rohin Shah},
+      year={2025},
+      eprint={2510.23966},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2510.23966},
+}
