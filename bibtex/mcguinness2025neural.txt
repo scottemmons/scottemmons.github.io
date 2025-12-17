@@ -1,0 +1,8 @@
+@misc{mcguinness2025neural,
+      title={{Neural Chameleons: Language Models Can Learn to Hide Their Thoughts from Unseen Activation Monitors}},
+      author={Max McGuinness and Alex Serrano and Luke Bailey and Scott Emmons},
+      year={2025},
+      eprint={2512.11949},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
